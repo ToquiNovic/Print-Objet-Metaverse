@@ -1,58 +1,36 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-
+const express = require("express");
 const routerroadobjects = express.Router();
+const mysqlConnection = require("../db");
 
-routerroadobjects.get('/', (req, res) => {
+routerroadobjects.get('/', async (req, res) => {
   try {
-    // Obtener la ruta completa al archivo 'contornos.json'
-    const filePath = path.join(__dirname, '..', 'data', 'contornos.json');
+    const queries = [
+      mysqlConnection.promise().query('SELECT car.x_car, car.y_car, car.centroidx_car, car.centroidy_car FROM car'),
+      mysqlConnection.promise().query('SELECT * FROM meta'),
+      mysqlConnection.promise().query('SELECT object.x_object, object.y_object, object.w_object, object.h_object, object.centroidx_object, object.centroidy_object FROM object'),
+      mysqlConnection.promise().query('SELECT racetrack.whcmx_racetrack, racetrack.whcmy_racetrack, racetrack.whpxx_racetrack, racetrack.whpxy_racetrack, racetrack.pxporcm_racetrack FROM racetrack'),
+      mysqlConnection.promise().query('SELECT * FROM route')
+    ];
+
+    const results = await Promise.all(queries);
+
+    const data = {
+      "PosicionCarrito": results[0][0].map(car => [car.x_car, car.y_car])[0],
+      "PosicionMeta": results[1][0].map(meta => [meta.x_meta, meta.y_meta])[0],
+      "whcm": results[3][0].map(whcm => [whcm.whcmx_racetrack,whcm.whcmy_racetrack])[0],
+      "whpx": results[3][0].map(whpx => [whpx.whpxx_racetrack,whpx.whpxy_racetrack])[0],
+      "pxporcm": results[3][0].map(pxporcm => pxporcm.pxporcm_racetrack),
+    };
     
-    // Leer el contenido del archivo JSON
-    const jsonData = fs.readFileSync(filePath, 'utf8');
-    
-    // Convertir el contenido JSON en un objeto JavaScript
-    const data = JSON.parse(jsonData);
-    
-    // Enviar la respuesta con los datos obtenidos
-    res.send(data);
+    const objects = {
+      "centroide": results[2][0].map(centroid => [centroid.centroidx_object, centroid.centroidy_object]),
+      "xywh": results[2][0].map(xywh => [xywh.x_object,xywh.y_object,xywh.w_object,xywh.h_object])
+    };
+
+    res.json({ msg: {data: data, objects: objects} });
   } catch (error) {
-    console.error('Error al leer el archivo JSON:', error);
-    res.status(500).send('Error al leer el archivo JSON');
+    res.status(500).send({ error: error });
   }
 });
-
-// Ruta POST para actualizar los datos en 'contornos.json'
-routerroadobjects.post('/', (req, res) => {
-    try {
-      // Obtener la ruta completa al archivo 'contornos.json'
-      const filePath = path.join(__dirname, '..', 'data', 'contornos.json');
-  
-      // Leer el contenido actual del archivo JSON
-      const jsonData = fs.readFileSync(filePath, 'utf8');
-  
-      // Convertir el contenido JSON en un objeto JavaScript
-      const data = JSON.parse(jsonData);
-  
-      // Acceder a los datos enviados desde Python
-      const nuevosDatos = req.body;
-  
-      // Actualizar los datos en el objeto JavaScript
-      data.push(nuevosDatos);
-  
-      // Convertir los datos actualizados en formato JSON
-      const newDataJson = JSON.stringify(data);
-  
-      // Escribir los datos actualizados en 'contornos.json'
-      fs.writeFileSync(filePath, newDataJson);
-  
-      // Enviar una respuesta indicando el éxito de la actualización
-      res.send('Datos actualizados correctamente');
-    } catch (error) {
-      console.error('Error al actualizar el archivo JSON:', error);
-      res.status(500).send('Error al actualizar el archivo JSON');
-    }
-  });
 
 module.exports = routerroadobjects;
