@@ -1,6 +1,51 @@
 const express = require("express");
 const routeMeta = express.Router();
 
+/**
+ * @swagger
+ * /meta:
+ *   post:
+ *     summary: Ubicar el Carro en el Metaverso
+ *     tags: [Meta]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               x_meta:
+ *                 type: string
+ *               y_meta:
+ *                 type: string
+ *             example:
+ *               x_meta: "valor1"
+ *               y_meta: "valor2"
+ *     responses:
+ *       200:
+ *         description: Car en Meta ubicado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *             example:
+ *               msg: "Car en Meta ubicado en las coordenadas x: valor1, y: valor2"
+ *       500:
+ *         description: Error al cargar META
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *             example:
+ *               msg: "Error al cargar META"
+ */
+
 routeMeta.post("/", async (req, res) => {
   const mysqlConnection = require("../db");
   const idMeta = crypto.randomUUID();

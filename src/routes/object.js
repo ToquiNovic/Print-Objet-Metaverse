@@ -1,6 +1,68 @@
 const express = require("express");
 const routeObjects = express.Router();
 
+/**
+ * @swagger
+ * /object:
+ *   post:
+ *     summary: Establecer la posición de los obstaculos
+ *     tags: [Object]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                 x_object:
+ *                   type: string
+ *                 y_object:
+ *                   type: string
+ *                 centroidx_object:
+ *                   type: string
+ *                 centroidy_object:
+ *                   type: string
+ *                 w_object:
+ *                   type: string
+ *                 h_object:
+ *                   type: string
+ *             example:
+ *               - x_object: "valor1"
+ *                 y_object: "valor2"
+ *                 centroidx_object: "valor3"
+ *                 centroidy_object: "valor4"
+ *                 w_object: "valor5"
+ *                 h_object: "valor6"
+ *     responses:
+ *       200:
+ *         description: Obstáculos cargados exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *             example:
+ *               msg: "Obstáculos cargados"
+ *       500:
+ *         description: Error al cargar los obstáculos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *                 error:
+ *                   type: object
+ *             example:
+ *               msg: "Error al cargar los obstáculos"
+ *               error: {}
+ */
+
 routeObjects.post("/", async (req, res) => {
   const mysqlConnection = require("../db");
 
