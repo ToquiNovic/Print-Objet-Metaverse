@@ -74,4 +74,48 @@ routeracetrack.post("/", async (req, res) => {
   });
 });
 
+/**
+ * @swagger
+ * /api/racetrack:
+ *   get:
+ *     summary: Obtener los datos de la pista de carreras
+ *     tags: [Racetrack]
+ *     responses:
+ *       200:
+ *         description: Pista de carreras obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *       500:
+ *         description: Error al obtener la pista de carreras
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *             example:
+ *               msg: "Error al cargar los datos"
+ */
+
+routeracetrack.get("/", async (req, res) => {
+  const mysqlConnection = require("../db");
+  let sqlQuery = `SELECT * FROM racetrack`;
+  
+  mysqlConnection.query(sqlQuery, (err, rows) => {
+    if (!err) {
+      res.json({
+        msg: rows
+      })
+    }else {
+      res.status(500).json({msg: "Error al Obtener los datos"})
+    }
+  });
+});
+
 module.exports = routeracetrack;
