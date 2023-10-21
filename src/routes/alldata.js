@@ -3,7 +3,7 @@ const routerroadobjects = express.Router();
 
 /**
  * @swagger
- * /api/roadobjects:
+ * /api/alldata:
  *   get:
  *     summary: Obtener todos los datos en una sola ruta
  *     tags: [All Data]

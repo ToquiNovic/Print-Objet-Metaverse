@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-router.use("/roadobjects", require("./roadObjects"));
+router.use("/alldata", require("./alldata"));
 router.use("/meta", require("./meta"));
 router.use("/car", require("./car"));
 router.use("/racetrack", require("./racetrack"));
