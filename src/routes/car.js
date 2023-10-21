@@ -3,7 +3,7 @@ const routecar = express.Router();
 
 /**
  * @swagger
- * /car:
+ * /api/car:
  *   post:
  *     summary: Establecer la posición del Carro en RealLife
  *     tags: [Car]

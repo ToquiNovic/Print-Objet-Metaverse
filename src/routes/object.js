@@ -3,7 +3,7 @@ const routeObjects = express.Router();
 
 /**
  * @swagger
- * /object:
+ * /api/object:
  *   post:
  *     summary: Establecer la posición de los obstaculos
  *     tags: [Object]

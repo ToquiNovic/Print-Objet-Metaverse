@@ -3,7 +3,7 @@ const routeracetrack = express.Router();
 
 /**
  * @swagger
- * /racetrack:
+ * /api/racetrack:
  *   post:
  *     summary: Crear una nueva pista de carreras
  *     tags: [Racetrack]

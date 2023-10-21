@@ -3,7 +3,7 @@ const routeMeta = express.Router();
 
 /**
  * @swagger
- * /meta:
+ * /api/meta:
  *   post:
  *     summary: Ubicar el Carro en el Metaverso
  *     tags: [Meta]

@@ -1,6 +1,81 @@
 const express = require("express");
 const routerroadobjects = express.Router();
 
+/**
+ * @swagger
+ * /api/roadobjects:
+ *   get:
+ *     summary: Obtener todos los datos en una sola ruta
+ *     tags: [All Data]
+ *     responses:
+ *       200:
+ *         description: Datos obtenidos exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         PosicionCarrito:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                         PosicionMeta:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                         whcm:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                         whpx:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                         pxporcm:
+ *                           type: string
+ *                     objects:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           centroide:
+ *                             type: array
+ *                             items:
+ *                               type: string
+ *                           xywh:
+ *                             type: array
+ *                             items:
+ *                               type: string
+ *             example:
+ *               msg:
+ *                 data:
+ *                   PosicionCarrito: ["valor1", "valor2"]
+ *                   PosicionMeta: ["valor3", "valor4"]
+ *                   whcm: ["valor5", "valor6"]
+ *                   whpx: ["valor7", "valor8"]
+ *                   pxporcm: "valor9"
+ *                 objects:
+ *                   - centroide: ["valor10", "valor11"]
+ *                     xywh: ["valor12", "valor13", "valor14", "valor15"]
+ *       500:
+ *         description: Error al obtener los datos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: object
+ *             example:
+ *               error: {}
+ */
+
 routerroadobjects.get("/", async (req, res) => {
   const mysqlConnection = require("../db");
 
