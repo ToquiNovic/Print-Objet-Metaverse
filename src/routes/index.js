@@ -5,5 +5,6 @@ router.use("/meta", require("./meta"));
 router.use("/car", require("./car"));
 router.use("/racetrack", require("./racetrack"));
 router.use("/object", require("./object"));
+router.use("/reset", require("./reset"));
 
 module.exports = router;
