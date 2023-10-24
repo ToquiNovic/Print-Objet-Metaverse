@@ -208,21 +208,21 @@ routerroadobjects.get("/", async (req, res) => {
  *                         PosicionCarrito:
  *                           type: array
  *                           items:
- *                             type: string
+ *                             type: number
  *                         PosicionMeta:
  *                           type: array
  *                           items:
- *                             type: string
+ *                             type: number
  *                         whcm:
  *                           type: array
  *                           items:
- *                             type: string
+ *                             type: number
  *                         whpx:
  *                           type: array
  *                           items:
- *                             type: string
+ *                             type: number
  *                         pxporcm:
- *                           type: string
+ *                           type: number
  *                     objects:
  *                       type: array
  *                       items:
@@ -231,11 +231,11 @@ routerroadobjects.get("/", async (req, res) => {
  *                           centroide:
  *                             type: array
  *                             items:
- *                               type: string
+ *                               type: number
  *                           xywh:
  *                             type: array
  *                             items:
- *                               type: string
+ *                               type: number
  *             example:
  *               msg:
  *                 data:
@@ -268,7 +268,7 @@ routerroadobjects.post("/", async (req, res) => {
 
   const ids = new Set();
   while (ids.size < numIds) {
-    ids.add(crypto.randomUUID());
+    ids.add(uuidv4());
   }
 
   const [idCar, idMeta, idObjects, idRacetrack] = ids;
