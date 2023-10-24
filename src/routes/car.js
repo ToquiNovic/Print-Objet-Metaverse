@@ -1,5 +1,6 @@
 const express = require("express");
 const routecar = express.Router();
+const { v4: uuidv4 } = require('uuid');
 
 /**
  * @swagger
@@ -54,7 +55,7 @@ const routecar = express.Router();
 
 routecar.post("/", async (req, res) => {
   const mysqlConnection = require("../db");
-  const idCar = crypto.randomUUID();
+  const idCar = uuidv4();
   const { x_car, y_car, centroidx_car, centroidy_car } = req.body;
 
   let mysqlquery = `

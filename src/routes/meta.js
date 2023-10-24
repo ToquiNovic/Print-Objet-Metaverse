@@ -1,5 +1,7 @@
 const express = require("express");
 const routeMeta = express.Router();
+const { v4: uuidv4 } = require('uuid');
+
 
 /**
  * @swagger
@@ -48,7 +50,7 @@ const routeMeta = express.Router();
 
 routeMeta.post("/", async (req, res) => {
   const mysqlConnection = require("../db");
-  const idMeta = crypto.randomUUID();
+  const idMeta = uuidv4();
   const { x_meta, y_meta } = req.body;
 
   let mysqlquery = `

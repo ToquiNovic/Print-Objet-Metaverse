@@ -1,5 +1,7 @@
 const express = require("express");
 const routerroadobjects = express.Router();
+const { v4: uuidv4 } = require('uuid');
+
 
 /**
  * @swagger
@@ -317,7 +319,7 @@ for (const obj of objects) {
   const [centroidx_object, centroidy_object] = centroide;
   const [x_object, y_object, w_object, h_object] = xywh;
 
-  const idObject = crypto.randomUUID();
+  const idObject = uuidv4();
 
   await mysqlConnection.query("INSERT INTO object (id_object, x_object, y_object, centroidx_object, centroidy_object, w_object, h_object) VALUES (?, ?, ?, ?, ?, ?, ?)", [idObject, x_object, y_object, centroidx_object, centroidy_object, w_object, h_object]);
 }

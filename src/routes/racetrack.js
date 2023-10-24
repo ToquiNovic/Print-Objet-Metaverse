@@ -1,5 +1,7 @@
 const express = require("express");
 const routeracetrack = express.Router();
+const { v4: uuidv4 } = require('uuid');
+
 
 /**
  * @swagger
@@ -56,7 +58,7 @@ const routeracetrack = express.Router();
  */
 routeracetrack.post("/", async (req, res) => {
   const mysqlConnection = require("../db");
-  const idRacetrack = crypto.randomUUID();
+  const idRacetrack = uuidv4();
   const { whcmx_racetrack, whcmy_racetrack, whpxx_racetrack, whpxy_racetrack, pxporcm_racetrack } = req.body;
 
   let mysqlquery = `

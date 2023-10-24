@@ -1,5 +1,7 @@
 const express = require("express");
 const routeObjects = express.Router();
+const { v4: uuidv4 } = require('uuid');
+
 
 /**
  * @swagger
@@ -69,7 +71,7 @@ routeObjects.post("/", async (req, res) => {
   const objects = req.body;
 
   const promises = objects.map((object) => {
-    const idObjects = crypto.randomUUID();
+    const idObjects = uuidv4();
     const {
       x_object,
       y_object,
