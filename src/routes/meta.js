@@ -15,12 +15,12 @@ const routeMeta = express.Router();
  *             type: object
  *             properties:
  *               x_meta:
- *                 type: string
+ *                 type: number
  *               y_meta:
- *                 type: string
+ *                 type: number
  *             example:
- *               x_meta: "valor1"
- *               y_meta: "valor2"
+ *               x_meta: 1
+ *               y_meta: 2
  *     responses:
  *       200:
  *         description: Car en Meta ubicado exitosamente

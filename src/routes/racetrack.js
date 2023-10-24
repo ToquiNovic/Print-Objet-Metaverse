@@ -15,21 +15,21 @@ const routeracetrack = express.Router();
  *             type: object
  *             properties:
  *               whcmx_racetrack:
- *                 type: string
+ *                 type: number
  *               whcmy_racetrack:
- *                 type: string
+ *                 type: number
  *               whpxx_racetrack:
- *                 type: string
+ *                 type: number
  *               whpxy_racetrack:
- *                 type: string
+ *                 type: number
  *               pxporcm_racetrack:
- *                 type: string
+ *                 type: number
  *             example:
- *               whcmx_racetrack: "valor1"
- *               whcmy_racetrack: "valor2"
- *               whpxx_racetrack: "valor3"
- *               whpxy_racetrack: "valor4"
- *               pxporcm_racetrack: "valor5"
+ *               whcmx_racetrack: 1
+ *               whcmy_racetrack: 2
+ *               whpxx_racetrack: 3
+ *               whpxy_racetrack: 3
+ *               pxporcm_racetrack: 4
  *     responses:
  *       200:
  *         description: Pista de carreras creada exitosamente

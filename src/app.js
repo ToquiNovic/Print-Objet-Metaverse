@@ -22,4 +22,3 @@ app.listen(app.get("port"), () => {
   console.log("😁 server en puerto", port);
   swaggerDocs(app, port);
 });
-

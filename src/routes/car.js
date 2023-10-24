@@ -15,18 +15,18 @@ const routecar = express.Router();
  *             type: object
  *             properties:
  *               x_car:
- *                 type: string
+ *                 type: number
  *               y_car:
- *                 type: string
+ *                 type: number
  *               centroidx_car:
- *                 type: string
+ *                 type: number
  *               centroidy_car:
- *                 type: string
+ *                 type: number
  *             example:
- *               x_car: "valor1"
- *               y_car: "valor2"
- *               centroidx_car: "valor3"
- *               centroidy_car: "valor4"
+ *               x_car: 1
+ *               y_car: 2
+ *               centroidx_car: 3
+ *               centroidy_car: 4
  *     responses:
  *       200:
  *         description: Car ubicado exitosamente

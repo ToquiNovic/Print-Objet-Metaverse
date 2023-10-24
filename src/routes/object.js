@@ -17,24 +17,24 @@ const routeObjects = express.Router();
  *               type: object
  *               properties:
  *                 x_object:
- *                   type: string
+ *                   type: number
  *                 y_object:
- *                   type: string
+ *                   type: number
  *                 centroidx_object:
- *                   type: string
+ *                   type: number
  *                 centroidy_object:
- *                   type: string
+ *                   type: number
  *                 w_object:
- *                   type: string
+ *                   type: number
  *                 h_object:
- *                   type: string
+ *                   type: number
  *             example:
- *               - x_object: "valor1"
- *                 y_object: "valor2"
- *                 centroidx_object: "valor3"
- *                 centroidy_object: "valor4"
- *                 w_object: "valor5"
- *                 h_object: "valor6"
+ *               - x_object: 1
+ *                 y_object: 2
+ *                 centroidx_object: 3
+ *                 centroidy_object: 4
+ *                 w_object: 5
+ *                 h_object: 6
  *     responses:
  *       200:
  *         description: Obstáculos cargados exitosamente

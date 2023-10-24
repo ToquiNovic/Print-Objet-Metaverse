@@ -5,7 +5,7 @@ const routeReset = express.Router();
  * @swagger
  * /api/reset:
  *   delete:
- *     summary: Elimina todos los registros de las tablas 'car', 'meta', 'object' y 'racetrack'
+ *     summary: Elimina todos los registros de las tablas
  *     tags: [Reset]
  *     responses:
  *       200:
@@ -46,7 +46,7 @@ routeReset.delete("/", async (req, res) => {
 
     res.json({ msg: "Tablas vaciadas correctamente" });
   } catch (error) {
-    res.status(500).send({ error: error });
+    res.status(500).send({ msg: error });
   }
 });
 
