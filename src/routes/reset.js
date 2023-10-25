@@ -34,13 +34,28 @@ const routeReset = express.Router();
 
 routeReset.delete("/", async (req, res) => {
   const mysqlConnection = require("../db");
+  const idCar = "be64f5e5-8d08-4cd9-9805-2e8ccb3206f6";
+  const idMeta = "a95de7b3-96fb-451e-b9bb-142c7321e344";
+  const idRacetrack = "f7f47c83-489a-458c-b7f3-68d6f6377995";
 
   try {
     const queries = [
-      mysqlConnection.promise().query("TRUNCATE car"),
-      mysqlConnection.promise().query("TRUNCATE meta"),
+      mysqlConnection
+        .promise()
+        .query(
+          ` UPDATE car SET x_car = 0, y_car = 0, centroidx_car = 0, centroidy_car = 0 WHERE id_car = '${idCar}' `
+        ),
+      mysqlConnection
+        .promise()
+        .query(
+          ` UPDATE meta SET x_meta = 0, y_meta = 0 WHERE id_meta = '${idMeta}'`
+        ),
       mysqlConnection.promise().query("TRUNCATE object"),
-      mysqlConnection.promise().query("TRUNCATE racetrack"),
+      mysqlConnection
+        .promise()
+        .query(
+          ` UPDATE racetrack SET whcmx_racetrack = 0, whcmy_racetrack = 0, whpxx_racetrack = 0, whpxy_racetrack = 0, pxporcm_racetrack = 0, status_racetrack = 0 WHERE id_racetrack = '${idRacetrack}'`
+        ),
     ];
     const results = await Promise.all(queries);
 

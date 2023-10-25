@@ -1,11 +1,10 @@
 const express = require("express");
 const routecar = express.Router();
-const { v4: uuidv4 } = require('uuid');
 
 /**
  * @swagger
  * /api/car:
- *   post:
+ *   put:
  *     summary: Establecer la posición del Carro en RealLife
  *     tags: [Car]
  *     requestBody:
@@ -53,13 +52,22 @@ const { v4: uuidv4 } = require('uuid');
  *               msg: "Error al cargar Car"
  */
 
-routecar.post("/", async (req, res) => {
+routecar.put("/", async (req, res) => {
   const mysqlConnection = require("../db");
-  const idCar = uuidv4();
+  const idCar = "be64f5e5-8d08-4cd9-9805-2e8ccb3206f6";
   const { x_car, y_car, centroidx_car, centroidy_car } = req.body;
 
   let mysqlquery = `
-    INSERT INTO car (id_car, x_car, y_car, centroidx_car, centroidy_car) VALUES ('${idCar}','${x_car}', '${y_car}', '${centroidx_car}', '${centroidy_car}')`;
+    UPDATE 
+      car
+    SET
+       x_car = '${x_car}', 
+       y_car = '${y_car}', 
+       centroidx_car = '${centroidx_car}', 
+       centroidy_car = '${centroidy_car}'
+    WHERE
+       id_car = '${idCar}'
+    `;
   mysqlConnection.query(mysqlquery, (err, rows) => {
     if (!err) {
       res.json({

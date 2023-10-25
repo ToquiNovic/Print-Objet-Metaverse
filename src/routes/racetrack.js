@@ -1,12 +1,10 @@
 const express = require("express");
 const routeracetrack = express.Router();
-const { v4: uuidv4 } = require('uuid');
-
 
 /**
  * @swagger
  * /api/racetrack:
- *   post:
+ *   put:
  *     summary: Crear una nueva pista de carreras
  *     tags: [Racetrack]
  *     requestBody:
@@ -56,13 +54,24 @@ const { v4: uuidv4 } = require('uuid');
  *             example:
  *               msg: "Error al cargar racetrack"
  */
-routeracetrack.post("/", async (req, res) => {
+
+routeracetrack.put("/", async (req, res) => {
   const mysqlConnection = require("../db");
-  const idRacetrack = uuidv4();
+  const idRacetrack = "f7f47c83-489a-458c-b7f3-68d6f6377995";
   const { whcmx_racetrack, whcmy_racetrack, whpxx_racetrack, whpxy_racetrack, pxporcm_racetrack } = req.body;
 
   let mysqlquery = `
-  INSERT INTO racetrack (id_racetrack, whcmx_racetrack, whcmy_racetrack, whpxx_racetrack, whpxy_racetrack, pxporcm_racetrack) VALUES ('${idRacetrack}', '${whcmx_racetrack}', '${whcmy_racetrack}', '${whpxx_racetrack}', '${whpxy_racetrack}', '${pxporcm_racetrack}')
+  UPDATE
+    racetrack 
+  SET
+     whcmx_racetrack = '${whcmx_racetrack}', 
+     whcmy_racetrack = '${whcmy_racetrack}', 
+     whpxx_racetrack = '${whpxx_racetrack}', 
+     whpxy_racetrack = '${whpxy_racetrack}', 
+     pxporcm_racetrack = '${pxporcm_racetrack}',
+     status_racetrack = 1
+  WHERE  
+    id_racetrack = '${idRacetrack}'
   `;
 
   mysqlConnection.query(mysqlquery, (err, rows) => {

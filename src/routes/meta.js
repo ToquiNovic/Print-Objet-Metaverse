@@ -1,12 +1,10 @@
 const express = require("express");
 const routeMeta = express.Router();
-const { v4: uuidv4 } = require('uuid');
-
 
 /**
  * @swagger
  * /api/meta:
- *   post:
+ *   put:
  *     summary: Ubicar el Carro en el Metaverso
  *     tags: [Meta]
  *     requestBody:
@@ -48,13 +46,19 @@ const { v4: uuidv4 } = require('uuid');
  *               msg: "Error al cargar META"
  */
 
-routeMeta.post("/", async (req, res) => {
+routeMeta.put("/", async (req, res) => {
   const mysqlConnection = require("../db");
-  const idMeta = uuidv4();
+  const idMeta = "a95de7b3-96fb-451e-b9bb-142c7321e344";
   const { x_meta, y_meta } = req.body;
 
   let mysqlquery = `
-  INSERT INTO meta (id_meta, x_meta, y_meta) VALUES ('${idMeta}','${x_meta}', '${y_meta}')
+  UPDATE
+    meta 
+  SET 
+    x_meta = '${x_meta}', 
+    y_meta = '${y_meta}'
+  WHERE 
+    id_meta = '${idMeta}'
   `;
 
   mysqlConnection.query(mysqlquery, (err, rows) => {
