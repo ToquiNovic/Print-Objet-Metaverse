@@ -5,7 +5,7 @@ const routeMeta = express.Router();
  * @swagger
  * /api/meta:
  *   put:
- *     summary: Ubicar el Carro en el Metaverso
+ *     summary: Ubicar el Carro en el Meta
  *     tags: [Meta]
  *     requestBody:
  *       required: true

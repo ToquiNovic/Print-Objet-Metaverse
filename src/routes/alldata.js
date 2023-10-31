@@ -1,7 +1,6 @@
 const express = require("express");
 const routerroadobjects = express.Router();
-const { v4: uuidv4 } = require('uuid');
-
+const { v4: uuidv4 } = require("uuid");
 
 /**
  * @swagger
@@ -260,7 +259,6 @@ routerroadobjects.get("/", async (req, res) => {
  *               error: {}
  */
 
-
 routerroadobjects.post("/", async (req, res) => {
   const mysqlConnection = require("../db").promise();
 
@@ -285,7 +283,7 @@ routerroadobjects.post("/", async (req, res) => {
     whpxx_racetrack,
     whpxy_racetrack,
     pxporcm_racetrack,
-    objects
+    objects,
   } = req.body;
 
   const data = {
@@ -304,27 +302,52 @@ routerroadobjects.post("/", async (req, res) => {
 
   try {
     // Consulta INSERT para la tabla "car"
-    await mysqlConnection.query("INSERT INTO car (id_car, x_car, y_car, centroidx_car, centroidy_car) VALUES (?, ?, ?, ?, ?)", [idCar, data.x_car, data.y_car, data.centroidx_car, data.centroidy_car]);
-  
+    await mysqlConnection.query(
+      "INSERT INTO car (id_car, x_car, y_car, centroidx_car, centroidy_car) VALUES (?, ?, ?, ?, ?)",
+      [idCar, data.x_car, data.y_car, data.centroidx_car, data.centroidy_car]
+    );
+
     // Consulta INSERT para la tabla "meta"
-    await mysqlConnection.query("INSERT INTO meta (id_meta, x_meta, y_meta) VALUES (?, ?, ?)", [idMeta, data.x_meta, data.y_meta]);
-  
+    await mysqlConnection.query(
+      "INSERT INTO meta (id_meta, x_meta, y_meta) VALUES (?, ?, ?)",
+      [idMeta, data.x_meta, data.y_meta]
+    );
+
     // Consulta INSERT para la tabla "racetrack"
-    await mysqlConnection.query("INSERT INTO racetrack (id_racetrack, whcmx_racetrack, whcmy_racetrack, whpxx_racetrack, whpxy_racetrack, pxporcm_racetrack) VALUES (?, ?, ?, ?, ?, ?)", [idRacetrack, data.whcmx_racetrack, data.whcmy_racetrack, data.whpxx_racetrack, data.whpxy_racetrack, data.pxporcm_racetrack]);
+    await mysqlConnection.query(
+      "INSERT INTO racetrack (id_racetrack, whcmx_racetrack, whcmy_racetrack, whpxx_racetrack, whpxy_racetrack, pxporcm_racetrack) VALUES (?, ?, ?, ?, ?, ?)",
+      [
+        idRacetrack,
+        data.whcmx_racetrack,
+        data.whcmy_racetrack,
+        data.whpxx_racetrack,
+        data.whpxy_racetrack,
+        data.pxporcm_racetrack,
+      ]
+    );
 
     // Insertar objetos en la tabla "object"
-    // Insertar objetos en la tabla "object"
-for (const obj of objects) {
-  const { centroide, xywh } = obj;
-  const [centroidx_object, centroidy_object] = centroide;
-  const [x_object, y_object, w_object, h_object] = xywh;
+    for (const obj of objects) {
+      const { centroide, xywh } = obj;
+      const [centroidx_object, centroidy_object] = centroide;
+      const [x_object, y_object, w_object, h_object] = xywh;
 
-  const idObject = uuidv4();
+      const idObject = uuidv4();
 
-  await mysqlConnection.query("INSERT INTO object (id_object, x_object, y_object, centroidx_object, centroidy_object, w_object, h_object) VALUES (?, ?, ?, ?, ?, ?, ?)", [idObject, x_object, y_object, centroidx_object, centroidy_object, w_object, h_object]);
-}
+      await mysqlConnection.query(
+        "INSERT INTO object (id_object, x_object, y_object, centroidx_object, centroidy_object, w_object, h_object) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [
+          idObject,
+          x_object,
+          y_object,
+          centroidx_object,
+          centroidy_object,
+          w_object,
+          h_object,
+        ]
+      );
+    }
 
-  
     res.status(200).json({ msg: "Datos cargados correctamente" });
   } catch (error) {
     console.error(error);
