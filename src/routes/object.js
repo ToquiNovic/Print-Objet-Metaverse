@@ -100,7 +100,7 @@ routeObjects.post("/", async (req, res) => {
       });
     })
     .catch((error) => {
-      res.status(500).json({ msg: "Error al cargar Car", error: error });
+      res.status(500).json({ msg: "Error al cargar Obstaculos", error: error });
     });
 });
 
@@ -143,7 +143,7 @@ routeObjects.get("/", async (req , res) => {
         msg: rows
       })
     } else {
-      res.status(500).json({msg: "Error al Obtener los datos del meta"})
+      res.status(500).json({msg: "Error al Obtener los datos de los Obstaculos"})
     }
   });
 });
@@ -187,7 +187,7 @@ routeObjects.delete("/", async (req , res) => {
         msg: rows
       })
     } else {
-      res.status(500).json({msg: "Error al Obtener los datos del meta"})
+      res.status(500).json({msg: "Error al Obtener los datos de los Obstaculos"})
     }
   });
 });

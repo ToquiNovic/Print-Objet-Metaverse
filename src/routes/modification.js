@@ -36,8 +36,9 @@ routemodification.get("/", async (req, res) => {
 
   mysqlConnection.query(sqlQuery, (err, rows) => {
     if (!err) {
+      const status = rows[0].status_racetrack;
       res.json({
-        msg: rows.length > 0 ? "true" : "false",
+        msg: status === 0 ? "true" : "false",
       });
     } else {
       res.status(500).json({ msg: "Error al Obtener los datos" });
@@ -115,8 +116,10 @@ routemodification.put("/:status", async (req, res) => {
   mysqlConnection.query(sqlQuery, (err, rows) => {
     if (!err) {
       res.json({
-        msg: rows.length > 0 ? "true" : "false",
+        msg: status === "true" ? "true" : "false",
       });
+      console.log(statusValue);
+
     } else {
       res.status(500).json({ msg: "Error al obtener los datos" });
     }
