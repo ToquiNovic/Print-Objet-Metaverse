@@ -24,6 +24,11 @@ const options = {
         swaggerUI.serve,
         swaggerUI.setup(specs)
       );
+      app.use(
+        "/api",
+        swaggerUI.serve,
+        swaggerUI.setup(specs)
+      );
   };
 
   module.exports = {swaggerDocs};
