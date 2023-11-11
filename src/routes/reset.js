@@ -56,6 +56,8 @@ routeReset.delete("/", async (req, res) => {
         .query(
           ` UPDATE racetrack SET whcmx_racetrack = 0, whcmy_racetrack = 0, whpxx_racetrack = 0, whpxy_racetrack = 0, pxporcm_racetrack = 0, status_racetrack = 0 WHERE id_racetrack = '${idRacetrack}'`
         ),
+      mysqlConnection.promise().query("TRUNCATE route"),
+
     ];
     const results = await Promise.all(queries);
 
