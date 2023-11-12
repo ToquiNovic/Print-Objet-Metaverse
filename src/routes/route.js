@@ -155,9 +155,9 @@ routePoints.get("/", async (req, res) => {
 
 /**
  * @swagger
- * /api/route/current:
+ * /api/route/end:
  *   get:
- *     summary: Obtener el punto ACTUAL de la Ruta
+ *     summary: Obtener el PUNTO DE LLEGADA de la Ruta
  *     tags: [Route]
  *     responses:
  *       200:
@@ -182,7 +182,7 @@ routePoints.get("/", async (req, res) => {
  *               msg: "Error al cargar los puntos de la Ruta"
  */
 
-routePoints.get("/current", async (req, res) => {
+routePoints.get("/end", async (req, res) => {
   const mysqlConnection = require("../db");
   let sqlQuery = `
   SELECT 
@@ -193,6 +193,67 @@ routePoints.get("/current", async (req, res) => {
   FROM 
     route 
   ORDER BY orden DESC
+`;
+
+  mysqlConnection.query(sqlQuery, (err, rows) => {
+    if (!err) {
+      const transformedRows = rows.map(row => ({
+        orden: row.orden,
+        x_route: row.x_route,
+        y_route: row.y_route,
+        state: row.state === 0 ? false : true
+      }));
+
+      res.json({
+        msg: transformedRows[0],
+      });
+    } else {
+      console.log(err);
+      res.status(500).json({ msg: "Error al Obtener los datos del Carro" });
+    }
+  });
+});
+
+/**
+ * @swagger
+ * /api/route/start:
+ *   get:
+ *     summary: Obtener el PUNTO DE INICIO de la Ruta
+ *     tags: [Route]
+ *     responses:
+ *       200:
+ *         description: Datos de los puntos de la Ruta
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: object
+ *       500:
+ *         description: Error al los puntos de la Ruta
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *             example:
+ *               msg: "Error al cargar los puntos de la Ruta"
+ */
+
+routePoints.get("/start", async (req, res) => {
+  const mysqlConnection = require("../db");
+  let sqlQuery = `
+  SELECT 
+    orden,
+    x_route,
+    y_route,
+    state    
+  FROM 
+    route 
+  ORDER BY orden ASC
 `;
 
   mysqlConnection.query(sqlQuery, (err, rows) => {
