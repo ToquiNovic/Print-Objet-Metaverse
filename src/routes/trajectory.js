@@ -66,17 +66,11 @@ routetrajectory.get("/", async (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *               x_car:
- *                 type: number
- *               y_car:
- *                 type: number
  *               centroidx_car:
  *                 type: number
  *               centroidy_car:
  *                 type: number
  *             example:
- *               x_car: 1
- *               y_car: 2
  *               centroidx_car: 3
  *               centroidy_car: 4
  *     responses:
@@ -117,7 +111,7 @@ routetrajectory.post("/", async (req, res) => {
        centroidx_car, 
        centroidy_car)
     VALUES
-    ('${idCar}', '${x_car}', '${y_car}', '${centroidx_car}', '${centroidy_car}')
+    ('${idCar}', 0, 0, '${centroidx_car}', '${centroidy_car}')
     `;
   mysqlConnection.query(mysqlquery, (err, rows) => {
     if (!err) {
