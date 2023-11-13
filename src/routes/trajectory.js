@@ -1,13 +1,64 @@
 const express = require("express");
-const routecar = express.Router();
+const routetrajectory = express.Router();
 const { v4: uuidv4 } = require("uuid");
 
 /**
  * @swagger
- * /api/car:
- *   put:
- *     summary: Establecer la posición del Carro en RealLife
- *     tags: [Car]
+ * /api/trajectory:
+ *   get:
+ *     summary: Obtener los datos de la Posicion del Carro
+ *     tags: [Trajectory]
+ *     responses:
+ *       200:
+ *         description: Datos del Carro obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *       500:
+ *         description: Error al obtener la pista de carreras
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *             example:
+ *               msg: "Error al cargar los datos"
+ */
+
+routetrajectory.get("/", async (req, res) => {
+  const mysqlConnection = require("../db");
+  let sqlQuery = `
+  SELECT 
+    ROW_NUMBER() OVER (ORDER BY insert_time) AS orden,
+    centroidx_car, 
+    centroidy_car 
+  FROM car
+  ORDER BY insert_time ASC
+  `;
+
+  mysqlConnection.query(sqlQuery, (err, rows) => {
+    if (!err) {
+      res.json({
+        msg: rows,
+      });
+    } else {
+      res.status(500).json({ msg: "Error al Obtener los datos del meta" });
+    }
+  });
+});
+
+/**
+ * @swagger
+ * /api/trajectory:
+ *   post:
+ *     summary: Establecer la posición del Carro / TRAYECTORIA
+ *     tags: [Trajectory]
  *     requestBody:
  *       required: true
  *       content:
@@ -53,21 +104,20 @@ const { v4: uuidv4 } = require("uuid");
  *               msg: "Error al cargar Car"
  */
 
-routecar.put("/", async (req, res) => {
+routetrajectory.post("/", async (req, res) => {
   const mysqlConnection = require("../db");
-  const idCar = "be64f5e5-8d08-4cd9-9805-2e8ccb3206f6";
+  const idCar = uuidv4();
   const { x_car, y_car, centroidx_car, centroidy_car } = req.body;
 
   let mysqlquery = `
-    UPDATE 
-      car
-    SET
-       x_car = '${x_car}', 
-       y_car = '${y_car}', 
-       centroidx_car = '${centroidx_car}', 
-       centroidy_car = '${centroidy_car}'
-    WHERE
-       id_car = '${idCar}'
+    INSERT INTO car(
+       id_car,
+       x_car, 
+       y_car, 
+       centroidx_car, 
+       centroidy_car)
+    VALUES
+    ('${idCar}', '${x_car}', '${y_car}', '${centroidx_car}', '${centroidy_car}')
     `;
   mysqlConnection.query(mysqlquery, (err, rows) => {
     if (!err) {
@@ -76,16 +126,17 @@ routecar.put("/", async (req, res) => {
       });
     } else {
       res.status(500).json({ msg: "Error al cargar Car" });
+      console.log(err);
     }
   });
 });
 
 /**
  * @swagger
- * /api/car:
+ * /api/trajectory/current:
  *   get:
- *     summary: Obtener los datos de la Posicion del Carro
- *     tags: [Car]
+ *     summary: Obtener la posicion ACTUAL del carro
+ *     tags: [Trajectory]
  *     responses:
  *       200:
  *         description: Datos del Carro obtenida exitosamente
@@ -109,14 +160,22 @@ routecar.put("/", async (req, res) => {
  *               msg: "Error al cargar los datos"
  */
 
-routecar.get("/", async (req, res) => {
+routetrajectory.get("/current", async (req, res) => {
   const mysqlConnection = require("../db");
-  let sqlQuery = `SELECT * FROM car`;
+  let sqlQuery = `
+  SELECT 
+    ROW_NUMBER() OVER (ORDER BY insert_time) AS orden,
+    centroidx_car, 
+    centroidy_car 
+  FROM 
+    car
+  ORDER BY insert_time DESC
+    `;
 
   mysqlConnection.query(sqlQuery, (err, rows) => {
     if (!err) {
       res.json({
-        msg: rows,
+        msg: rows[0],
       });
     } else {
       res.status(500).json({ msg: "Error al Obtener los datos del meta" });
@@ -124,5 +183,4 @@ routecar.get("/", async (req, res) => {
   });
 });
 
-
-module.exports = routecar;
+module.exports = routetrajectory;

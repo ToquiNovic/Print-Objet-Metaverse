@@ -8,5 +8,6 @@ router.use("/object", require("./object"));
 router.use("/reset", require("./reset"));
 router.use("/modification", require("./modification"));
 router.use("/route", require("./route"));
+router.use("/trajectory", require("./trajectory"));
 
 module.exports = router;
