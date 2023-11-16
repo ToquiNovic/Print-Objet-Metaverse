@@ -1,6 +1,7 @@
 const express = require("express");
 const routePoints = express.Router();
 const { v4: uuidv4 } = require("uuid");
+const mysqlConnection = require("../db");
 
 /**
  * @swagger
@@ -56,41 +57,52 @@ const { v4: uuidv4 } = require("uuid");
  */
 
 routePoints.post("/", async (req, res) => {
-  const mysqlConnection = require("../db");
-
   const points = Array.isArray(req.body) ? req.body : [req.body];
 
-  const promises = points.map((point, index) => {
-    const idPonts = uuidv4();
-    const { x_route, y_route } = point;
-    const state = point.state ? 1 : 0;
-    const order = index + 1;
+  mysqlConnection.getConnection((err, connection) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ msg: "Error al conectar a la base de datos", error: err });
+      return;
+    }
 
-    let mysqlquery = `
-      INSERT INTO route (id_route, x_route, y_route, state, orden) 
-      VALUES ('${idPonts}', '${x_route}', '${y_route}', '${state}', '${order}')`;
+    const promises = points.map((point, index) => {
+      const idPonts = uuidv4();
+      const { x_route, y_route } = point;
+      const state = point.state ? 1 : 0;
+      const order = index + 1;
 
-    return new Promise((resolve, reject) => {
-      mysqlConnection.query(mysqlquery, (err, rows) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
+      let mysqlquery = `
+        INSERT INTO route (id_route, x_route, y_route, state, orden) 
+        VALUES ('${idPonts}', '${x_route}', '${y_route}', '${state}', '${order}')`;
+
+      return new Promise((resolve, reject) => {
+        connection.query(mysqlquery, (err, rows) => {
+          if (err) {
+            console.log(err);
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        });
       });
     });
+
+    Promise.all(promises)
+      .then(() => {
+        res.json({
+          msg: `Puntos Cargados`,
+        });
+      })
+      .catch((error) => {
+        res.status(500).json({ msg: "Error al cargar Puntos", error: error });
+      })
+      .finally(() => {
+        connection.release();
+      });
   });
-
-  Promise.all(promises)
-    .then(() => {
-      res.json({
-        msg: `Puntos Cargados`,
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({ msg: "Error al cargar Puntos", error: error });
-    });
 });
+
 
 /**
  * @swagger
