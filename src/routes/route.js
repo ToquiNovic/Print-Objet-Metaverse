@@ -66,40 +66,29 @@ routePoints.post("/", async (req, res) => {
       return;
     }
 
-    const promises = points.map((point, index) => {
+    const values = points.map((point, index) => {
       const idPonts = uuidv4();
       const { x_route, y_route } = point;
       const state = point.state ? 1 : 0;
       const order = index + 1;
 
-      let mysqlquery = `
-        INSERT INTO route (id_route, x_route, y_route, state, orden) 
-        VALUES ('${idPonts}', '${x_route}', '${y_route}', '${state}', '${order}')`;
-
-      return new Promise((resolve, reject) => {
-        connection.query(mysqlquery, (err, rows) => {
-          if (err) {
-            console.log(err);
-            reject(err);
-          } else {
-            resolve(rows);
-          }
-        });
-      });
+      return [idPonts, x_route, y_route, state, order];
     });
 
-    Promise.all(promises)
-      .then(() => {
-        res.json({
-          msg: `Puntos Cargados`,
-        });
-      })
-      .catch((error) => {
-        res.status(500).json({ msg: "Error al cargar Puntos", error: error });
-      })
-      .finally(() => {
-        connection.release();
-      });
+    let mysqlquery = `
+      INSERT INTO route (id_route, x_route, y_route, state, orden) 
+      VALUES ?`;
+
+    connection.query(mysqlquery, [values], (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ msg: "Error al cargar Puntos", error: err });
+      } else {
+        res.json({ msg: `Puntos Cargados` });
+      }
+
+      connection.release();
+    });
   });
 });
 
