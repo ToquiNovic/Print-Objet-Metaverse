@@ -1,6 +1,7 @@
 const express = require("express");
 const routeObjects = express.Router();
 const { v4: uuidv4 } = require('uuid');
+const mysqlConnection = require("../db");
 
 /**
  * @swagger
@@ -65,8 +66,6 @@ const { v4: uuidv4 } = require('uuid');
  */
 
 routeObjects.post("/", async (req, res) => {
-  const mysqlConnection = require("../db");
-
   const objects = req.body;
 
   const promises = objects.map((object) => {
@@ -134,7 +133,6 @@ routeObjects.post("/", async (req, res) => {
  */
 
 routeObjects.get("/", async (req , res) => {
-  const mysqlConnection = require("../db");
   let sqlQuery = `SELECT * FROM object`;
 
   mysqlConnection.query(sqlQuery, (err, rows) => {
@@ -178,7 +176,6 @@ routeObjects.get("/", async (req , res) => {
  */
 
 routeObjects.delete("/", async (req , res) => {
-  const mysqlConnection = require("../db");
   let sqlQuery = `TRUNCATE object`;
 
   mysqlConnection.query(sqlQuery, (err, rows) => {

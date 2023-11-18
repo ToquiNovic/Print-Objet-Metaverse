@@ -111,18 +111,48 @@ routecar.put("/", async (req, res) => {
 
 routecar.get("/", async (req, res) => {
   const mysqlConnection = require("../db");
-  let sqlQuery = `SELECT * FROM car`;
+  let sqlQuery = `
+  SELECT 
+    orden,
+    x_route,
+    y_route
+  FROM 
+    route
+  ORDER BY orden ASC`;
 
   mysqlConnection.query(sqlQuery, (err, rows) => {
     if (!err) {
+      let processedRows = [];
+      let previousFinalPosition = null;
+      for (let i = 0; i < rows.length; i++) {
+        let initialPosition = previousFinalPosition || rows[i];
+        let finalPosition = rows[i + 1];
+        let routeSegment = {
+          initialPosition: {
+            "orden": initialPosition.orden,
+            "x_route": initialPosition.x_route,
+            "y_route": initialPosition.y_route,
+          },
+          finalPosition: finalPosition
+            ? {
+                "orden": finalPosition.orden,
+                "x_route": finalPosition.x_route,
+                "y_route": finalPosition.y_route,
+              }
+            : null,
+        };
+        processedRows.push(routeSegment);
+        previousFinalPosition = finalPosition;
+      }
       res.json({
-        msg: rows,
+        msg: processedRows,
       });
     } else {
-      res.status(500).json({ msg: "Error al Obtener los datos del meta" });
+      res.status(500).json({ msg: "Error al Obtener los datos de la ruta para el carro" });
     }
   });
 });
+
 
 
 module.exports = routecar;
