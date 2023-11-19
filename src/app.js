@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 const morgan = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
@@ -16,8 +18,11 @@ app.use(cors());
 //routes
 app.use("/api", require("./routes"));
 
+//socket.io connection
+require('./socket.js')(io);
+
 //start server
-app.listen(app.get("port"), () => {
+server.listen(app.get("port"), () => {
   const port = app.get("port");
   console.log("😁 server en puerto", port);
   swaggerDocs(app, port);
