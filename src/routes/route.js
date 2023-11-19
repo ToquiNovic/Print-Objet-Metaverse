@@ -22,11 +22,17 @@ const mysqlConnection = require("../db");
  *                   type: number
  *                 y_route:
  *                   type: number
+ *                 cm_route:
+ *                   type: number
+ *                 degree_route:
+ *                    type: number
  *                 state:
  *                   type: boolean
  *             example:
  *               - x_route: 1
  *                 y_route: 2
+ *                 cm_route: 10
+ *                 degree_route: 90
  *                 state: true
  *     responses:
  *       200:
@@ -68,15 +74,15 @@ routePoints.post("/", async (req, res) => {
 
     const values = points.map((point, index) => {
       const idPonts = uuidv4();
-      const { x_route, y_route } = point;
+      const { x_route, y_route, cm_route, degree_route } = point;
       const state = point.state ? 1 : 0;
       const order = index + 1;
 
-      return [idPonts, x_route, y_route, state, order];
+      return [idPonts, x_route, y_route, cm_route, degree_route, state, order];
     });
 
     let mysqlquery = `
-      INSERT INTO route (id_route, x_route, y_route, state, orden) 
+      INSERT INTO route (id_route, x_route, y_route, cm_route, degree_route, state, orden) 
       VALUES ?`;
 
     connection.query(mysqlquery, [values], (err, result) => {
