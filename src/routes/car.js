@@ -84,7 +84,7 @@ routecar.put("/", async (req, res) => {
  * @swagger
  * /api/car:
  *   get:
- *     summary: Obtener los datos de la Posicion del Carro
+ *     summary: Obtener la ruta con posicion incial y posicion final
  *     tags: [Car]
  *     responses:
  *       200:

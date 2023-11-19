@@ -5,9 +5,52 @@ const mysqlConnection = require("../db");
 /**
  * @swagger
  * /api/speed:
+ *   get:
+ *     summary: Obtener Velocidad de los motores
+ *     tags: [Speed]
+ *     responses:
+ *       200:
+ *         description: Obtener Velocidad de los motores
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *       500:
+ *         description: Error al cargar La Velocidad
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *             example:
+ *               msg: "Error al cargar La Velocidad"
+ */
+
+
+routeSpeed.get("/", async (req , res) => {
+  let sqlQuery = `SELECT speed_a, speed_B FROM speed_car`;
+  mysqlConnection.query(sqlQuery, (err, rows) => {
+    if (!err) {
+      res.json({
+        msg: rows
+      })
+    } else {
+      res.status(500).json({msg: "Error al cargar La Velocidad"})
+    }
+  });
+});
+
+/**
+ * @swagger
+ * /api/speed:
  *   put:
  *     summary: Establecer Velocidad de los motores
- *     tags: [speed]
+ *     tags: [Speed]
  *     requestBody:
  *       required: true
  *       content:
