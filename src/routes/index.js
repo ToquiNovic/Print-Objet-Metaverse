@@ -9,5 +9,6 @@ router.use("/reset", require("./reset"));
 router.use("/modification", require("./modification"));
 router.use("/route", require("./route"));
 router.use("/trajectory", require("./trajectory"));
+router.use("/speed", require("./speed"));
 
 module.exports = router;

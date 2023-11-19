@@ -115,7 +115,9 @@ routecar.get("/", async (req, res) => {
   SELECT 
     orden,
     x_route,
-    y_route
+    y_route,
+    cm_route,
+    degree_route
   FROM 
     route
   ORDER BY orden ASC`;
@@ -131,13 +133,15 @@ routecar.get("/", async (req, res) => {
           initialPosition: {
             "orden": initialPosition.orden,
             "x_route": initialPosition.x_route,
-            "y_route": initialPosition.y_route,
+            "y_route": initialPosition.y_route
           },
           finalPosition: finalPosition
             ? {
                 "orden": finalPosition.orden,
                 "x_route": finalPosition.x_route,
                 "y_route": finalPosition.y_route,
+                "cm_route": finalPosition.cm_route,
+                "degree_route": finalPosition.degree_route
               }
             : null,
         };
