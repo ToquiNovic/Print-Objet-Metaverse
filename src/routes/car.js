@@ -157,6 +157,53 @@ routecar.get("/", async (req, res) => {
   });
 });
 
+/**
+ * @swagger
+ * /api/car/points:
+ *   get:
+ *     summary: Obtener la cantidad de puntos de la ruta
+ *     tags: [Car]
+ *     responses:
+ *       200:
+ *         description: Datos de la cantidad de puntos de la ruta
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *       500:
+ *         description: Error al Obtener la cantidad de puntos de la ruta
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *             example:
+ *               msg: "Error al cargar los datos"
+ */
 
+routecar.get("/points", async (req, res) => {
+  const mysqlConnection = require("../db");
+  let sqlQuery = `
+  SELECT 
+    orden AS points
+  FROM 
+    route
+  ORDER BY orden DESC`;
+
+  mysqlConnection.query(sqlQuery, (err, rows) => {
+    if (!err) {
+      res.json({
+        msg: rows[0],
+      });
+    } else {
+      res.status(500).json({ msg: "Error al Obtener la cantidad de puntos de la ruta" });
+    }
+  });
+});
 
 module.exports = routecar;
